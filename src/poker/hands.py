@@ -171,3 +171,29 @@ def is_high_card(hand: list[str], board: list[str]) -> bool:
         or is_straight(hand, board)
         or is_straight_flush(hand, board)
     )
+
+
+def evaluate_hand(hand: list[str], board: list[str]) -> str:
+    """Évalue une main de poker et retourne le nom de la meilleure combinaison.
+
+    Vérifie les combinaisons de la plus forte à la plus faible :
+    Straight Flush > Four of a Kind > Full House >
+    Flush > Straight > Three of a Kind > Two Pair > One Pair > High Card
+    """
+    if is_straight_flush(hand, board):
+        return "Straight Flush"
+    if is_four_of_a_kind(hand, board):
+        return "Four of a Kind"
+    if is_full_house(hand, board):
+        return "Full House"
+    if is_flush(hand, board):
+        return "Flush"
+    if is_straight(hand, board):
+        return "Straight"
+    if is_three_of_a_kind(hand, board):
+        return "Three of a Kind"
+    if is_two_pair(hand, board):
+        return "Two Pair"
+    if is_one_pair(hand, board):
+        return "One Pair"
+    return "High Card"
