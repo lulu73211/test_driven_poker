@@ -77,3 +77,16 @@ def is_full_house(hand: list[str], board: list[str]) -> bool:
             has_pair = True
 
     return has_three and has_pair
+
+
+def is_flush(hand: list[str], board: list[str]) -> bool:
+    """Vérifie si parmi les 7 cartes (hand + board), il existe une flush (5 cartes de même couleur)."""
+    all_cards = hand + board
+    parsed = [parse_card(c) for c in all_cards]
+
+    # Compter les cartes par couleur
+    suit_counts: dict[str, int] = {}
+    for _, suit in parsed:
+        suit_counts[suit] = suit_counts.get(suit, 0) + 1
+
+    return any(count >= 5 for count in suit_counts.values())
