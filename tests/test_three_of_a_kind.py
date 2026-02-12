@@ -1,4 +1,4 @@
-from src.poker.hands2 import is_three_of_a_kind
+from src.poker.hands import is_three_of_a_kind
 
 
 def test_three_of_a_kind_basic():

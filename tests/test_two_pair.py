@@ -1,4 +1,4 @@
-from src.poker.hands2 import is_two_pair
+from src.poker.hands import is_two_pair
 
 
 def test_two_pair_basic():

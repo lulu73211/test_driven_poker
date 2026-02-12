@@ -1,4 +1,4 @@
-from src.poker.hands2 import is_straight
+from src.poker.hands import is_straight
 
 
 def test_straight_basic():
