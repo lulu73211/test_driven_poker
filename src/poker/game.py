@@ -306,3 +306,62 @@ def compare_hands(hand1: tuple[str, list[str]], hand2: tuple[str, list[str]]) ->
     elif result < 0:
         return 2
     return 0
+
+
+def determine_winner(
+    board: list[str], players: list[dict[str, any]]
+) -> list[dict[str, any]]:
+    """Détermine le(s) gagnant(s) parmi plusieurs joueurs.
+
+    Args:
+        board: Les 5 cartes communes
+        players: Liste de dictionnaires avec 'name' et 'hand' (2 cartes)
+                 Exemple: [{"name": "Alice", "hand": ["AS", "KH"]}, ...]
+
+    Returns:
+        Liste des joueurs gagnants avec leurs informations complètes :
+        [{"name": "...", "hand": [...], "best_hand": {"hand_name": "...", "cards": [...]}}]
+        En cas d'égalité, plusieurs joueurs sont retournés.
+    """
+    # Calculer la meilleure main pour chaque joueur
+    players_with_hands = []
+    for player in players:
+        hand_name, cards = best_five(player["hand"], board)
+        players_with_hands.append(
+            {
+                "name": player["name"],
+                "hand": player["hand"],
+                "best_hand": {"hand_name": hand_name, "cards": cards},
+            }
+        )
+
+    # Trouver le(s) meilleur(s) joueur(s)
+    if len(players_with_hands) == 1:
+        return players_with_hands
+
+    winners = [players_with_hands[0]]
+    for i in range(1, len(players_with_hands)):
+        current_player = players_with_hands[i]
+        best_player = winners[0]
+
+        # Comparer avec le meilleur joueur actuel
+        current_hand = (
+            current_player["best_hand"]["hand_name"],
+            current_player["best_hand"]["cards"],
+        )
+        best_hand = (
+            best_player["best_hand"]["hand_name"],
+            best_player["best_hand"]["cards"],
+        )
+
+        result = compare_hands(current_hand, best_hand)
+
+        if result == 1:
+            # Le joueur courant gagne, il devient le seul gagnant
+            winners = [current_player]
+        elif result == 0:
+            # Égalité, ajouter aux gagnants
+            winners.append(current_player)
+        # Si result == 2, le joueur courant perd, on ne change rien
+
+    return winners
