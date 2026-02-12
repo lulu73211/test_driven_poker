@@ -56,3 +56,24 @@ def is_four_of_a_kind(hand: list[str], board: list[str]) -> bool:
         value_counts[value] = value_counts.get(value, 0) + 1
 
     return any(count >= 4 for count in value_counts.values())
+
+
+def is_full_house(hand: list[str], board: list[str]) -> bool:
+    """Vérifie si parmi les 7 cartes (hand + board), il existe un full house (brelan + paire)."""
+    all_cards = hand + board
+    parsed = [parse_card(c) for c in all_cards]
+
+    # Compter les occurrences de chaque valeur
+    value_counts: dict[int, int] = {}
+    for value, _ in parsed:
+        value_counts[value] = value_counts.get(value, 0) + 1
+
+    has_three = False
+    has_pair = False
+    for count in value_counts.values():
+        if count >= 3:
+            has_three = True
+        elif count >= 2:
+            has_pair = True
+
+    return has_three and has_pair
